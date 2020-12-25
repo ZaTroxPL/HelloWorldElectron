@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron')
+const shell = require('electron').shell;
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -9,7 +10,36 @@ function createWindow() {
         }
     });
 
-    win.loadFile('index.html');
+    win.loadFile('./src/index.html');
+
+    var menu = Menu.buildFromTemplate([
+        {
+            label: 'Menu',
+            submenu: [
+                { 
+                    label: 'Adjust Notification Value' 
+                },
+                {
+                    label: 'CoinMarketCap',
+                    click() {
+                        shell.openExternal('https://coinmarketcap.com')
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Exit',
+                    click() {
+                        app.quit()
+                    }
+                },
+            ]
+        }, {
+            label: "Info"
+        }])
+
+    Menu.setApplicationMenu(menu);
 };
 
 app.whenReady().then(createWindow);
